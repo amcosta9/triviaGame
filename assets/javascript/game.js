@@ -7,11 +7,18 @@ $(document).ready(function() {
     var questions = [{
         question: "Baymax's motions are modeled after the movements of what animal?",
         choices: ["baby penguins", "baby hippos", "kittens"],
-        correct: 0
+        correct: 0,
+        image: "assets/images/baymax-soccer.gif"
     }, {
         question: "The look and movement of microbots is based on",
         choices: ["microbacteria", "swarms of ants", "magnets"],
-        correct: 1
+        correct: 1,
+        image: "assets/images/microbots-hand.jpg"
+    }, {
+        question: "Big Hero 6 was the first collaboration between",
+        choices: ["Marvel and Pixar", "Pixar and DC Comics", "Disney Animation and DC Comics", "Marvel and Disney Animation"],
+        correct: 3,
+        image: "assets/images/marvelbh6.jpeg"
     }];
 
 
@@ -19,7 +26,7 @@ $(document).ready(function() {
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var outOfTimeQuestions = 0;
-    var number = 5;
+    var number = 10;
     var intervalId;
     var quizOver = false;
     var question;
@@ -31,6 +38,7 @@ $(document).ready(function() {
 
 // display first question with answer options and a timer counting down
     displayQuestion();
+    //maybe remove quiz message div?
     $(".quizMessage").hide();
 
 
@@ -41,30 +49,43 @@ $(document).ready(function() {
         if (!quizOver) {
 
             $("li").click(function() {
-                stop();
+                // stop();
                 var value = $("li").index(this);
                 console.log(value);
                 if (value === questions[currentQuestion].correct) {
                     console.log("clicked right answer!");
                     correctAnswers++;
+                    breakTimeCorrect();
                 }
                 else {
                     console.log("clicked wrong answer");
                     incorrectAnswers++;
                 };
-                nextQuestion();
+
+
 
             });
         };
-    };
+    };  //end game function
 
+    function breakTimeCorrect() {
+        $(".timeLeft").html("Correct!");
+        $(".question").html("<img src='" + questions[currentQuestion].image + "'/>");
+        // $(".choiceList").hide();
+        // $(".quizMessage").html("<p>Next Question</p>").on("click", nextQuestion());
+    }
+
+
+    //are there any questions left? if yes, display next, if no, display score
     function nextQuestion() {
+        // timer();
         currentQuestion++;
         //if no questions left, display score
         if (currentQuestion < questions.length) {
             displayQuestion();
         }
         else {
+            // stop();
             displayScore();
             quizOver = true;
         };
@@ -77,9 +98,10 @@ $(document).ready(function() {
 
     function displayQuestion() {
         //starts 30s timer
-        timer();
+        // timer();
         question = questions[currentQuestion].question;
         console.log("current question: " + question);
+        //is .find necessary?
         questionClass = $(".quizContainer").find(".question");
         choiceList = $(".quizContainer").find(".choiceList");
         numChoices = questions[currentQuestion].choices.length;
@@ -103,26 +125,27 @@ $(document).ready(function() {
 
 
 //sets interval that runs decrement function 1x per second
-    function timer() {
-        intervalId = setInterval(decrement, 1000);
-
-    };
-
-    function decrement() {
-        number--;
-        $(".timeLeft").html("<h3>" + number + "</h3>");
-        if (number === 0) {
-            stop();
-            outOfTimeQuestions++;
-            console.log("out of time");
-            nextQuestion();
-        };
-    };
-
-    function stop() {
-        clearInterval(intervalId);
-
-    };
+//     function timer() {
+//         intervalId = setInterval(decrement, 1000);
+//
+//     };
+//
+//     function decrement() {
+//         number--;
+//         $(".timeLeft").html("<h3>" + number + "</h3>");
+//         if (number === 0) {
+//             stop();
+//             number = 10;
+//             outOfTimeQuestions++;
+//             console.log("out of time");
+//             nextQuestion();
+//         };
+//     };
+//
+//     function stop() {
+//         clearInterval(intervalId);
+//
+//     };
 
 
 
@@ -137,60 +160,60 @@ $(document).ready(function() {
 //
 // var questions = [{
 //     question: "Baymax's motions are modeled after the movements of what animal?",
-//     choices: ["baby penguins", "baby hippos", "kittens"],
-//     correct: 1
+//     choices: ["baby penguins", "baby hippos", "baby humans"],
+//     correct: 0
 // }, {
 //     question: "The look and movement of microbots is based on",
-//     choices: ["swarms of ants", "", ""],
-//     correct:
+//     choices: ["microbacteria", "swarms of ants", "magnets"],
+//     correct: 1
 // }, {
 //     question: "Big Hero 6 was the first collaboration between",
-//     choices: ["Marvel and Disney Animation", "", ""],
-//     correct:
+//     choices: ["Marvel and Pixar", "Pixar and DC Comics", "Disney Animation and DC Comics", "Marvel and Disney Animation"],
+//     correct: 3
 // }, {
 //     question: "Who can be spotted on a Wanted sign at the police station?",
-//     choices: ["Prince Hans from Frozen", "", ""],
-//     correct:
+//     choices: ["Lord Dingwall from Brave", "Flynn Rider from Tangled", "Prince Hans from Frozen"],
+//     correct: 2
 // }, {
-//     question: "Big Hero 6 is the first Walt Disney animated film with an Asian protagonist since:",
-//     choises: ["The Jungle Book 2", "Mulan", ""],
-//     correct: 1
+//     question: "Big Hero 6 is the first Walt Disney Animation Studios film with an Asian protagonist since:",
+//     choises: ["The Jungle Book 2", "Mulan", "Treasure Planet"],
+//     correct: 0
 // }, {
-//     question: "Who from the Pixar universe can be spotted as an action figure in Fred's library?",
-//     choises: ["Elastigirl from The Incredibles", "", ""],
-//     correct: 1
+//     question: "What Pixar character can be spotted as an action figure in Fred's library?",
+//     choises: ["Buzz Lightyear", "Wall-E", "Elastigirl from The Incredibles"],
+//     correct: 2
 // }, {
 //     question: "Who from the Marvel universe can be spotted as an action figure in Fred's library?",
-//     choises: ["Sub-Mariner villain 'Orka'", "voodoo priest villain called 'Black Talon'"],
-//     correct: "1-2"
+//     choises: ["Sub-Mariner villain 'Orka'", "voodoo priest villain called 'Black Talon'", "Sleepwalker", "All of these guys and literally way more"],
+//     correct: "3"
 // }, {
 //     question: "Why is Go Go Tomago's super suit yellow?",
-//         choises: ["To match her name, Tomago, which means 'egg' in Japanese", ""],
-//         correct: 1
+//     choices: ["To match her name, Tomago, which means 'egg' in Japanese", "It is Jamie Chung (the voice of Go Go)'s favorite color", "In the comic books, Tomago's yellow suit is necessary for her to transmutate"],
+//     correct: 0
 // }, {
-//     question: "Although the characters are given Japanese names, the characters in Big Hero 6 are actually envisioned as:",
-//         choises: ["Korean", ""],
-//         correct: 1
+//     question: "Although they have Japanese names, the characters in Big Hero 6 were actually originally envisioned and written as:",
+//     choices: ["Mongolian", "Taiwanese", "Korean"],
+//     correct: 2
 // }, {
 //     question: "When Hiro falls between his desk and bed and Baymax comes to pick him up, what character can be seen under his bed?",
-//         choises: ["Oswald"],
-//         correct: 1
+//     choices: ["Hercules", "Oswald", "Aladdin"],
+//     correct: 1
 // }, {
 //     question: "In what year does Big Hero 6 take place?",
-//         choises: ["2032", ""],
-//         correct: 1
+//     choices: ["2014", "2032", "2020"],
+//     correct: 1
 // }, {
-//     question: "Where is Stan Lee's cameo?",
-//         choises: ["in the after-credits scene, Stan Lee appears as Fred's dad"],
-//         correct:
+//     question: "Who does Stan Lee cameo as?",
+//     choices: ["One of the science expo judges", "An inmate when Tadashi and Hiro get arrested", "Fred's dad"],
+//     correct: 2,
 // }, {
 //     question: "In the comic book, who actually is responsible for the creation of Baymax?",
-//         choises: ["Hiro", ""],
-//         correct: 1
+//     choices: ["Hiro", "Wasabi", "Honey Lemon"],
+//     correct: 0
 // }, {
 //     question: "",
-//         choises: [],
-//         correct: 1
+//     choices: [],
+//     correct: 1
 //
 //
 // }];
