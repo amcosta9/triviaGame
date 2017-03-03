@@ -8,17 +8,80 @@ $(document).ready(function() {
         question: "Baymax's motions are modeled after the movements of what animal?",
         choices: ["baby penguins", "baby hippos", "kittens"],
         correct: 0,
-        image: "assets/images/baymax-soccer.gif"
+        image: "assets/images/baymax-soccer.gif",
+        audiosrc: "assets/audio/badalala.wav"
     }, {
         question: "The look and movement of microbots is based on",
         choices: ["microbacteria", "swarms of ants", "magnets"],
         correct: 1,
-        image: "assets/images/microbots-hand.jpg"
+        image: "assets/images/microbots.gif",
+        audiosrc: "assets/audio/welcomenerdschool.wav"
     }, {
         question: "Big Hero 6 was the first collaboration between",
         choices: ["Marvel and Pixar", "Pixar and DC Comics", "Disney Animation and DC Comics", "Marvel and Disney Animation"],
         correct: 3,
-        image: "assets/images/marvelbh6.jpeg"
+        image: "assets/images/marvelbh6.jpeg",
+        audiosrc: "assets/audio/2botsenter.wav"
+    }, {
+        question: "Who can be spotted on a Wanted sign at the police station?",
+        choices: ["Lord Dingwall from Brave", "Flynn Rider from Tangled", "Prince Hans from Frozen"],
+        correct: 2,
+        image: "assets/images/hansposter.jpg",
+        audiosrc: "assets/audio/nevertakingbus.wav"
+    }, {
+        question: "Big Hero 6 is the first Walt Disney Animation Studios film with an Asian protagonist since:",
+        choices: ["The Jungle Book 2", "Mulan", "Treasure Planet"],
+        correct: 0,
+        image: "assets/images/bh6-kawaii.jpg",
+        audiosrc: "assets/audio/healthcarecompanion.wav"
+    }, {
+        question: "What Pixar character can be spotted as an action figure in Fred's library?",
+        choices: ["Buzz Lightyear", "Wall-E", "Elastigirl from The Incredibles"],
+        correct: 2,
+        image: "assets/images/bh6.gif",
+        audiosrc: "assets/audio/welcomenerdschool.wav"
+    }, {
+        question: "Who from the Marvel universe can be spotted as an action figure in Fred's library?",
+        choices: ["Sub-Mariner villain 'Orka'", "voodoo priest villain called 'Black Talon'", "Sleepwalker", "All of these guys and literally way more"],
+        correct: 3,
+        image: "assets/images/fistbump.gif",
+        audiosrc: "assets/audio/badalala.wav"
+    }, {
+        question: "Why is Go Go Tomago's super suit yellow?",
+        choices: ["To match her name, Tomago, which means 'egg' in Japanese", "It is Jamie Chung (the voice of Go Go)'s favorite color", "In the comic books, Tomago's yellow suit is necessary for her to transmutate"],
+        correct: 0,
+        image: "assets/images/gogotomago.png",
+        audiosrc: "assets/audio/womanup.wav"
+    }, {
+        question: "Although they have Japanese names, the characters in Big Hero 6 were actually originally envisioned and written as:",
+        choices: ["Mongolian", "Taiwanese", "Korean"],
+        correct: 2,
+        image: "assets/images/bh6-2.gif",
+        audiosrc: "assets/audio/washedup14.wav"
+    }, {
+        question: "When Hiro falls between his desk and bed and Baymax comes to pick him up, what character can be seen under his bed?",
+        choices: ["Hercules", "Oswald", "Aladdin"],
+        correct: 1,
+        image: "assets/images/youthink.gif",
+        audiosrc: "assets/audio/lollipop.wav"
+    }, {
+        question: "In what year does Big Hero 6 take place?",
+        choices: ["2014", "2032", "2020"],
+        correct: 1,
+        image: "assets/images/sanfransokyo.gif",
+        audiosrc: "assets/audio/wasabi.wav"
+    }, {
+        question: "Who does Stan Lee cameo as?",
+        choices: ["One of the science expo judges", "An inmate when Tadashi and Hiro get arrested", "Fred's dad"],
+        correct: 2,
+        image: "assets/images/stanlee.gif",
+        audiosrc: "assets/audio/cantoffend.wav"
+    }, {
+        question: "In the comic book, who actually is responsible for the creation of Baymax?",
+        choices: ["Hiro", "Wasabi", "Honey Lemon"],
+        correct: 0,
+        image: "assets/images/microbots2.gif",
+        audiosrc: "assets/audio/healthcarecompanion.wav"
     }];
 
 
@@ -33,13 +96,13 @@ $(document).ready(function() {
     var questionClass;
     var choiceList;
     var numChoices;
+    var audio = new Audio();
+
 
 
 
 // display first question with answer options and a timer counting down
     displayQuestion();
-    //maybe remove quiz message div?
-    $(".quizMessage").hide();
 
 
 
@@ -48,9 +111,9 @@ $(document).ready(function() {
 
         if (!quizOver) {
 
-            $("li").click(function() {
+            $(".list-group-item").click(function() {
                 // stop();
-                var value = $("li").index(this);
+                var value = $(".list-group-item").index(this);
                 console.log(value);
                 if (value === questions[currentQuestion].correct) {
                     console.log("clicked right answer!");
@@ -60,6 +123,7 @@ $(document).ready(function() {
                 else {
                     console.log("clicked wrong answer");
                     incorrectAnswers++;
+                    breakTimeIncorrect();
                 };
 
 
@@ -68,17 +132,51 @@ $(document).ready(function() {
         };
     };  //end game function
 
+    function playClip() {
+        audio.src = questions[currentQuestion].audiosrc;
+        console.log(audio);
+        audio.load();
+        audio.play();
+    }
+    function playWrong() {
+        audio.src = "assets/audio/ratepain.wav";
+        console.log(audio);
+        audio.load();
+        audio.play();
+    }
+
     function breakTimeCorrect() {
+        playClip();
         $(".timeLeft").html("Correct!");
         $(".question").html("<img src='" + questions[currentQuestion].image + "'/>");
-        // $(".choiceList").hide();
-        // $(".quizMessage").html("<p>Next Question</p>").on("click", nextQuestion());
+        $(".choiceList").hide();
+        $(".result").show().html("<p>Next Question</p>").click(function() {
+            $(".choiceList").show();
+            $(".timeLeft").html("timer here");
+            $(".result").hide();
+            nextQuestion();
+        });
+    }
+
+    function breakTimeIncorrect() {
+        playWrong();
+        var j = questions[currentQuestion].correct;
+        $(".timeLeft").html("Sorry, the correct answer was " + questions[currentQuestion].choices[j]);
+        $(".question").html("<img src='" + questions[currentQuestion].image + "'/>");
+        $(".choiceList").hide();
+        $(".result").show().html("<p>Next Question</p>").click(function() {
+            $(".choiceList").show();
+            $(".timeLeft").html("timer here");
+            $(".result").hide();
+            nextQuestion();
+        });
     }
 
 
     //are there any questions left? if yes, display next, if no, display score
     function nextQuestion() {
         // timer();
+        $(".result").unbind();
         currentQuestion++;
         //if no questions left, display score
         if (currentQuestion < questions.length) {
@@ -92,7 +190,25 @@ $(document).ready(function() {
     };
 
     function displayScore() {
+        $(".question").html("<img src='assets/images/bighero6-2.png'/>");
+        $(".choiceList").hide();
+        $(".quizMessage").html("<button>Play Again</button>").show().click(function() {
+            reset();
+            });
         $(".result").html("Correct answers: " + correctAnswers + "<br> Incorrect answers: " + incorrectAnswers + "<br>Unanswered Questions: " + outOfTimeQuestions);
+        $(".result").show();
+    };
+
+    function reset() {
+        currentQuestion = 0;
+        correctAnswers = 0;
+        incorrectAnswers = 0;
+        outOfTimeQuestions = 0;
+        quizOver = false;
+        $(".quizMessage").hide();
+        $(".choiceList").show();
+        $(".result").hide();
+        displayQuestion();
     }
 
 
@@ -111,12 +227,12 @@ $(document).ready(function() {
         $(questionClass).text(question);
 
         // Remove all current <li> elements (if any)
-        $(choiceList).find("li").remove();
+        $(choiceList).find(".list-group-item").remove();
 
         var choice;
         for (i = 0; i < numChoices; i++) {
             choice = questions[currentQuestion].choices[i];
-            $("<li>" + choice + "</li>").appendTo(choiceList);
+            $("<button type='button' class='list-group-item'>" + choice + "</button>").appendTo(choiceList);
         };
         game();
 
@@ -157,63 +273,21 @@ $(document).ready(function() {
 
 //trivia questions
 
-//
-// var questions = [{
-//     question: "Baymax's motions are modeled after the movements of what animal?",
-//     choices: ["baby penguins", "baby hippos", "baby humans"],
-//     correct: 0
-// }, {
-//     question: "The look and movement of microbots is based on",
-//     choices: ["microbacteria", "swarms of ants", "magnets"],
-//     correct: 1
-// }, {
-//     question: "Big Hero 6 was the first collaboration between",
-//     choices: ["Marvel and Pixar", "Pixar and DC Comics", "Disney Animation and DC Comics", "Marvel and Disney Animation"],
-//     correct: 3
-// }, {
-//     question: "Who can be spotted on a Wanted sign at the police station?",
-//     choices: ["Lord Dingwall from Brave", "Flynn Rider from Tangled", "Prince Hans from Frozen"],
-//     correct: 2
-// }, {
-//     question: "Big Hero 6 is the first Walt Disney Animation Studios film with an Asian protagonist since:",
-//     choises: ["The Jungle Book 2", "Mulan", "Treasure Planet"],
-//     correct: 0
-// }, {
-//     question: "What Pixar character can be spotted as an action figure in Fred's library?",
-//     choises: ["Buzz Lightyear", "Wall-E", "Elastigirl from The Incredibles"],
-//     correct: 2
-// }, {
-//     question: "Who from the Marvel universe can be spotted as an action figure in Fred's library?",
-//     choises: ["Sub-Mariner villain 'Orka'", "voodoo priest villain called 'Black Talon'", "Sleepwalker", "All of these guys and literally way more"],
-//     correct: "3"
-// }, {
-//     question: "Why is Go Go Tomago's super suit yellow?",
-//     choices: ["To match her name, Tomago, which means 'egg' in Japanese", "It is Jamie Chung (the voice of Go Go)'s favorite color", "In the comic books, Tomago's yellow suit is necessary for her to transmutate"],
-//     correct: 0
-// }, {
-//     question: "Although they have Japanese names, the characters in Big Hero 6 were actually originally envisioned and written as:",
-//     choices: ["Mongolian", "Taiwanese", "Korean"],
-//     correct: 2
-// }, {
-//     question: "When Hiro falls between his desk and bed and Baymax comes to pick him up, what character can be seen under his bed?",
-//     choices: ["Hercules", "Oswald", "Aladdin"],
-//     correct: 1
-// }, {
-//     question: "In what year does Big Hero 6 take place?",
-//     choices: ["2014", "2032", "2020"],
-//     correct: 1
-// }, {
-//     question: "Who does Stan Lee cameo as?",
-//     choices: ["One of the science expo judges", "An inmate when Tadashi and Hiro get arrested", "Fred's dad"],
-//     correct: 2,
-// }, {
-//     question: "In the comic book, who actually is responsible for the creation of Baymax?",
-//     choices: ["Hiro", "Wasabi", "Honey Lemon"],
-//     correct: 0
-// }, {
-//     question: "",
-//     choices: [],
-//     correct: 1
-//
-//
-// }];
+
+var questions = [{
+    question: "Baymax's motions are modeled after the movements of what animal?",
+    choices: ["baby penguins", "baby hippos", "baby humans"],
+    correct: 0
+}, {
+    question: "The look and movement of microbots is based on",
+    choices: ["microbacteria", "swarms of ants", "magnets"],
+    correct: 1
+}, {
+    question: "Big Hero 6 was the first collaboration between",
+    choices: ["Marvel and Pixar", "Pixar and DC Comics", "Disney Animation and DC Comics", "Marvel and Disney Animation"],
+    correct: 3
+}, {
+
+
+
+}];
