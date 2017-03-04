@@ -15,6 +15,10 @@ img {
     width: 98%;
 }
 
+.timeLeft {
+    font-family: 'Coiny', cursive;
+}
+
 .quizContainer {
     border-radius: 25px;
     background-color: #ffffff;
