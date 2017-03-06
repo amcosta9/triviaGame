@@ -59,7 +59,7 @@ $(document).ready(function() {
         image: "assets/images/bh6-2.gif",
         audiosrc: "assets/audio/washedup14.wav"
     }, {
-        question: "When Hiro falls between his desk and bed and Baymax comes to pick him up, what character can be seen under his bed?",
+        question: "When Hiro falls between his desk and bed and Baymax comes to pick him up, what character can be seen on the ceiling?",
         choices: ["Hercules", "Oswald", "Aladdin"],
         correct: 1,
         image: "assets/images/youthink.gif",
@@ -81,26 +81,15 @@ $(document).ready(function() {
         choices: ["Hiro", "Wasabi", "Honey Lemon"],
         correct: 0,
         image: "assets/images/microbots2.gif",
-        audiosrc: "assets/audio/healthcarecompanion.wav"
+        audiosrc: "assets/audio/lollipop.wav"
     }];
-
-    //array to hold random questions
-    var gameQuestions = [];
-
-    function pickQuestions() {
-        //from internet ???
-        questions.sort(function() { return 0.5 - Math.random() });
-        for(var i = 0; i < 10; i++){
-
-        }
-    };
 
 
     var currentQuestion = 0;
     var correctAnswers = 0;
     var incorrectAnswers = 0;
     var outOfTimeQuestions = 0;
-    var number = 10;
+    var number = 15;
     var intervalId;
     var question;
     var questionClass;
@@ -111,6 +100,7 @@ $(document).ready(function() {
     audio.src = "assets/audio/2botsenter.wav";
     console.log(audio);
     audio.load();
+    $(".playAgain").hide();
 
 
 $("#start").click(function() {
@@ -167,7 +157,7 @@ $("#start").click(function() {
         $(".question").html("<img src='" + questions[currentQuestion].image + "'/>");
         $(".choiceList").hide();
         setTimeout(function() {
-            $(".timeLeft").html(number);
+            $(".timeLeft").empty();
             $(".result").hide();
             $(".choiceList").show();
             nextQuestion();
@@ -182,7 +172,7 @@ $("#start").click(function() {
         $(".question").html("<img src='" + questions[currentQuestion].image + "'/>");
         $(".choiceList").hide();
         setTimeout(function() {
-            $(".timeLeft").html(number);
+            $(".timeLeft").empty();
             $(".result").hide();
             $(".choiceList").show();
             nextQuestion();
@@ -192,15 +182,13 @@ $("#start").click(function() {
 
     //are there any questions left? if yes, display next, if no, display score
     function nextQuestion() {
-        // timer();
         $(".result").unbind();
         currentQuestion++;
         //if no questions left, display score
-        if (currentQuestion < questions.length) {
+        if (currentQuestion < 10) {
             displayQuestion();
         }
         else {
-            // stop();
             displayScore();
         };
     };
@@ -209,7 +197,7 @@ $("#start").click(function() {
         $(".timeLeft").empty();
         $(".question").html("<img src='assets/images/bighero6-2.png'/>");
         $(".choiceList").hide();
-        $("#start").html("Play Again").show().click(function() {
+        $(".playAgain").show().click(function() {
             reset();
             });
         $(".result").html("Correct answers: " + correctAnswers + "<br> Incorrect answers: " + incorrectAnswers + "<br>Unanswered Questions: " + outOfTimeQuestions);
@@ -217,13 +205,17 @@ $("#start").click(function() {
     };
 
     function reset() {
+        //shuffles questions
+        questions.sort(function() { return 0.5 - Math.random() });
         currentQuestion = 0;
         correctAnswers = 0;
         incorrectAnswers = 0;
         outOfTimeQuestions = 0;
+        number = 15;
         $(".choiceList").show();
         $(".timeLeft").show();
         $(".result").hide();
+        $(".playAgain").hide();
         displayQuestion();
     }
 
@@ -264,11 +256,11 @@ $("#start").click(function() {
     };
 
     function decrement() {
-        number--;
         $(".timeLeft").html("<h3>" + number + "</h3>");
+        number--;
         if (number === 0) {
             stop();
-            number = 10;
+            number = 15;
             outOfTimeQuestions++;
             console.log("out of time");
             breakTimeIncorrect();
@@ -277,7 +269,7 @@ $("#start").click(function() {
 
     function stop() {
         clearInterval(intervalId);
-        number = 10;
+        number = 15;
     };
 
 
