@@ -1,16 +1,16 @@
-# triviaGame
+# Big Hero 6 Trivia Game
 
+## Check it out [here](https://amcosta9.github.io/triviaGame/)!
 
-TRIVIA GAME PSEUDOCODE
+#### How it works
 
+* This is a Big Hero 6 Trivia Game using jQuery
+* Play the game by clicking the `Click to Play` button and clicking on your answer to each question.
+* You have 15 seconds to answer each question.
+* New questions will load automatically.
+* _Turn the audio on to hear extra effects!_
+* Play again by clicking the `Play Again` button.  Your wins and losses will be kept until you reload the page.
 
-// document ready
-// computer chooses 10 random questions
-// display one question with answer options and a timer counting down
-// if player picks the correct answer, show a screen with a correct answer! message.
-// after a few seconds, the next question is displayed
-// if player runs out of time, show a screen saying out of time and display the correct answer
-// after a few seconds, the next question is displayed
-// if player picks the wrong answer, show a screen saying wrong answer and display the correct answer
-// after a few seconds, the next question is displayed
-// on final screen, show the number of correct, incorrect, and non-answers, and an option to restart the game
+#### Assignment
+
+* This application is an [assignment](https://github.com/UCF-Coding-Boot-Camp/01-2017-VW-Class-Content/blob/master/Homework/Week-05/Instructions/homework-instructions.md "Homework #5") excecuted by [Ariel M. Costa,](https://github.com/amcosta9 "Ariel Costa GitHub") for UCF Coding Bootcamp, Spring Cohort 
